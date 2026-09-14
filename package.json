@@ -18,7 +18,9 @@
     "test:int": "cross-env NODE_OPTIONS=--no-deprecation vitest run --config ./vitest.config.mts"
   },
   "dependencies": {
-    "@payloadcms/db-sqlite": "3.89.0",
+    "@neon/config": "^1.4.2",
+    "@neon/env": "^1.3.2",
+    "@payloadcms/db-postgres": "^3.89.0",
     "@payloadcms/next": "3.89.0",
     "@payloadcms/richtext-lexical": "3.89.0",
     "@payloadcms/translations": "^3.89.0",

@@ -42,7 +42,7 @@ export const Users: CollectionConfig = {
     ],
   },
   access: {
-    admin: ({ req: { user } }) => Boolean(user) && user.role === 'admin',
+    admin: ({ req: { user } }) => Boolean(user && user.role === 'admin'),
     create: () => true,
     read: ({ req: { user } }) => {
       if (!user) return false
@@ -54,7 +54,7 @@ export const Users: CollectionConfig = {
       if (user.role === 'admin') return true
       return { id: { equals: user.id } }
     },
-    delete: ({ req: { user } }) => Boolean(user) && user.role === 'admin',
+    delete: ({ req: { user } }) => Boolean(user && user.role === 'admin'),
   },
   fields: [
     {
@@ -69,7 +69,7 @@ export const Users: CollectionConfig = {
       required: true,
       saveToJWT: true,
       access: {
-        update: ({ req: { user } }) => Boolean(user) && user.role === 'admin',
+        update: ({ req: { user } }) => Boolean(user && user.role === 'admin'),
       },
     },
     {

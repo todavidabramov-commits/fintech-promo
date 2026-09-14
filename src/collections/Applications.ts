@@ -17,8 +17,8 @@ export const Applications: CollectionConfig = {
       if (user.role !== 'client') return true
       return { client: { equals: user.id } }
     },
-    update: ({ req: { user } }) => Boolean(user) && user.role !== 'client',
-    delete: ({ req: { user } }) => Boolean(user) && user.role !== 'client',
+    update: ({ req: { user } }) => Boolean(user && user.role !== 'client'),
+    delete: ({ req: { user } }) => Boolean(user && user.role !== 'client'),
   },
   hooks: {
     beforeValidate: [

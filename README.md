@@ -38,7 +38,7 @@
 |------|------------|
 | Frontend | Next.js 16 (App Router), React 19, CSS Modules |
 | CMS / Backend | Payload CMS 3 |
-| БД | SQLite (`@payloadcms/db-sqlite`) |
+| БД | PostgreSQL (`@payloadcms/db-postgres`) |
 | Auth | Payload Auth (cookie session) |
 | UI libs | react-fast-marquee, react-select, react-imask |
 | Validation | Yup |
@@ -49,7 +49,7 @@
 ## Плюсы архитектуры
 
 - **Один стек** — сайт, API и админка в одном Next.js-приложении
-- **SQLite из коробки** — быстрый старт без отдельного сервера БД
+- **PostgreSQL** — готово к деплою на Vercel (Neon / другой managed Postgres)
 - **Разделение ролей** — клиенты не попадают в `/admin`, админы работают в CMS
 - **Server Actions** — вход, регистрация и заявки без отдельного REST-слоя на фронте
 - **Типобезопасность** — TypeScript + автогенерация `payload-types.ts`
@@ -91,16 +91,26 @@ src/
 ### Требования
 - Node.js 20+
 - npm (или pnpm)
+- PostgreSQL (рекомендуется [Neon](https://neon.tech) — бесплатный tier; локально можно Docker)
 
 ### Установка
 
+1. Создайте БД в Neon (или поднимите Postgres через `docker compose up -d postgres`).
+2. Скопируйте connection string в `.env`:
+
 ```bash
 cp .env.example .env
+```
+
+3. Укажите `DATABASE_URL` и `PAYLOAD_SECRET`, затем:
+
+```bash
 npm install
 npm run dev
 ```
 
-Откройте [http://localhost:3000](http://localhost:3000).
+Откройте [http://localhost:3000](http://localhost:3000).  
+Payload создаст таблицы при первом запуске (`push` schema).
 
 Первый пользователь, созданный в `/admin`, получает роль **admin**.  
 Регистрация на сайте создаёт пользователей с ролью **client**.
@@ -110,11 +120,14 @@ npm run dev
 В `.env`:
 
 ```env
-DATABASE_URL=file:./.db
+DATABASE_URL=postgresql://USER:PASSWORD@HOST:5432/DB?sslmode=require
 PAYLOAD_SECRET=your-long-random-secret
 ```
 
-> Файл `.env` и база `.db` не коммитятся в git.
+Для Neon берите **pooled** connection string и добавьте `sslmode=require`.  
+Те же переменные задайте в Vercel → Project → Settings → Environment Variables.
+
+> Файл `.env` не коммитится в git. Старый локальный файл `.db` (SQLite) больше не используется.
 
 ### Скрипты
 
@@ -136,13 +149,24 @@ npm run payload             # CLI Payload
 
 ---
 
+## Деплой на Vercel
+
+1. Репозиторий уже на GitHub — импортируйте проект в [Vercel](https://vercel.com).
+2. Env: `DATABASE_URL` (Neon pooled) + `PAYLOAD_SECRET` (длинная случайная строка).
+3. Deploy. Схема БД подтянется при старте Payload.
+4. Media на Vercel не хранятся на диске — для загрузок в админке позже нужен Blob/S3 (`@payloadcms/storage-vercel-blob` и т.п.).
+
+Данные из старого SQLite (`.db`) **не переносятся автоматически** — после миграции создайте админа заново в `/admin`.
+
+---
+
 ## Дальнейшее развитие
 
 - Сохранение лидов с контактных форм в CMS
 - Email-уведомления по заявкам
 - Загрузка документов клиентом в кабинете
 - Вынос контента лендингов в коллекции Payload
-- Деплой (Vercel / VPS) с внешним storage для media
+- Vercel Blob / S3 для media
 
 ---
 
