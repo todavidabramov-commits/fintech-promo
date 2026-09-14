@@ -1,0 +1,83 @@
+.section {
+  overflow: hidden;
+}
+
+.track {
+  margin-top: 8px;
+}
+
+.card {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 168px;
+  min-height: 148px;
+  margin: 10px 16px 10px 0;
+  padding: 20px 16px 16px;
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  transition:
+    border-color 0.3s ease,
+    transform 0.3s ease;
+}
+
+.card:hover {
+  border-color: rgba(12, 148, 136, 0.35);
+  transform: scale(1.06);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 72px;
+}
+
+.image {
+  display: block;
+  height: 64px;
+  width: auto;
+  max-width: 120px;
+  object-fit: contain;
+}
+
+.caption {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  color: var(--color-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 768px) {
+  .card {
+    width: 144px;
+    min-height: 132px;
+    margin: 10px 12px 10px 0;
+    padding: 16px 12px 14px;
+    gap: 10px;
+  }
+
+  .logo {
+    height: 60px;
+  }
+
+  .image {
+    height: 52px;
+    max-width: 100px;
+  }
+
+  .caption {
+    font-size: 12px;
+  }
+}
