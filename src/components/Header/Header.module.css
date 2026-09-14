@@ -9,7 +9,13 @@
   border-bottom: 1px solid var(--color-border);
 }
 
+.headerOpen {
+  background: #fff;
+}
+
 .inner {
+  position: relative;
+  z-index: 60;
   width: 100%;
   max-width: none;
   height: 100%;
@@ -20,6 +26,7 @@
   margin-inline: 0;
   padding-inline: 40px;
   box-sizing: border-box;
+  background: inherit;
 }
 
 .logo {
@@ -101,6 +108,12 @@
   flex-shrink: 0;
 }
 
+.desktopActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .phone {
   font-size: 13px;
   font-weight: 600;
@@ -111,12 +124,76 @@
 
 .menuBtn {
   display: none;
-  width: 40px;
-  height: 40px;
+  position: relative;
+  width: 44px;
+  height: 44px;
+  padding: 0;
   border: 1px solid var(--color-border);
-  border-radius: 8px;
+  border-radius: 10px;
   background: #fff;
   cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.menuBtn:hover {
+  border-color: rgba(12, 148, 136, 0.45);
+}
+
+.menuBar {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--color-navy);
+  transition:
+    transform 0.28s ease,
+    opacity 0.2s ease,
+    top 0.28s ease;
+}
+
+.menuBar:nth-child(1) {
+  top: 15px;
+}
+
+.menuBar:nth-child(2) {
+  top: 21px;
+}
+
+.menuBar:nth-child(3) {
+  top: 27px;
+}
+
+.menuBtnOpen {
+  border-color: rgba(12, 148, 136, 0.45);
+  background: rgba(12, 148, 136, 0.06);
+}
+
+.menuBtnOpen .menuBar:nth-child(1) {
+  top: 21px;
+  transform: rotate(45deg);
+}
+
+.menuBtnOpen .menuBar:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0.4);
+}
+
+.menuBtnOpen .menuBar:nth-child(3) {
+  top: 21px;
+  transform: rotate(-45deg);
+}
+
+.backdrop {
+  display: none;
+}
+
+.panel {
+  display: none;
 }
 
 @media (max-width: 1360px) {
@@ -126,10 +203,6 @@
 }
 
 @media (max-width: 1280px) {
-  .actions :global(.btn--ghost-dark) {
-    display: none;
-  }
-
   .nav {
     gap: 4px;
   }
@@ -154,9 +227,125 @@
     display: none;
   }
 
+  .desktopActions {
+    display: none !important;
+  }
+
   .menuBtn {
     display: inline-flex;
-    align-items: center;
-    justify-content: center;
+  }
+
+  .backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    background: rgba(14, 22, 40, 0.42);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  .backdropOpen {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .panel {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    inset: 0;
+    z-index: 55;
+    width: 100%;
+    height: 100%;
+    height: 100dvh;
+    max-width: none;
+    padding: calc(var(--header-h) + 16px) 24px 32px;
+    background: #fff;
+    border: none;
+    box-shadow: none;
+    transform: translateY(-8px);
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      transform 0.28s ease,
+      opacity 0.28s ease;
+    overflow-y: auto;
+  }
+
+  .panelOpen {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .panelNav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .panelLink {
+    display: block;
+    padding: 14px 12px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--color-text);
+    transition:
+      background 0.2s ease,
+      color 0.2s ease;
+  }
+
+  .panelLink:hover,
+  .panelLinkActive {
+    background: rgba(12, 148, 136, 0.08);
+    color: var(--color-teal);
+  }
+
+  .panelFooter {
+    margin-top: auto;
+    padding-top: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .panelPhone {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--color-navy);
+    letter-spacing: 0.01em;
+  }
+
+  .panelFooter :global(.btn) {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .inner {
+    padding-inline: 16px;
+    gap: 12px;
+  }
+
+  .logo {
+    font-size: 14px;
+    gap: 8px;
+  }
+
+  .logoMark {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+
+  .panel {
+    width: 100%;
+    border-left: none;
   }
 }
