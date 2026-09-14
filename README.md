@@ -151,12 +151,27 @@ npm run payload             # CLI Payload
 
 ## Деплой на Vercel
 
-1. Репозиторий уже на GitHub — импортируйте проект в [Vercel](https://vercel.com).
-2. Env: `DATABASE_URL` (Neon pooled) + `PAYLOAD_SECRET` (длинная случайная строка).
-3. Deploy. Схема БД подтянется при старте Payload.
-4. Media на Vercel не хранятся на диске — для загрузок в админке позже нужен Blob/S3 (`@payloadcms/storage-vercel-blob` и т.п.).
+Стек **Next.js + Payload + Neon Postgres** рассчитан на serverless-деплой без отдельного VPS.
 
-Данные из старого SQLite (`.db`) **не переносятся автоматически** — после миграции создайте админа заново в `/admin`.
+### Плюсы такого деплоя
+
+- **Деплой из git** — каждый push в `main` собирает и выкатывает новую версию без ручного SSH
+- **Preview-окружения** — на каждый PR Vercel даёт отдельный URL для проверки до мержа
+- **CDN и edge** — статика и страницы раздаются близко к пользователю, без настройки nginx
+- **HTTPS и домен из коробки** — сертификат и кастомный домен без Certbot
+- **Масштабирование без админки сервера** — serverless-функции поднимаются под нагрузку
+- **Neon Postgres** — managed БД с connection pooling, ветками и бесплатным стартом; подходит serverless (в отличие от SQLite на диске)
+- **Один репозиторий = один проект** — сайт, кабинет и `/admin` живут на одном домене
+- **Секреты в UI** — `DATABASE_URL` и `PAYLOAD_SECRET` задаются в Environment Variables, не в коде
+
+### Как выкатить
+
+1. Импортируйте репозиторий в [Vercel](https://vercel.com).
+2. Env: `DATABASE_URL` (Neon **pooled** + `sslmode=require`) и `PAYLOAD_SECRET` (длинная случайная строка).
+3. Deploy. Payload создаст/обновит схему при старте.
+4. Media на serverless-диске не персистятся — для загрузок в админке позже нужен Blob/S3 (`@payloadcms/storage-vercel-blob` и т.п.).
+
+Данные из старого SQLite (`.db`) **не переносятся автоматически** — после первого деплоя создайте админа заново в `/admin`.
 
 ---
 
