@@ -43,10 +43,10 @@ export function Footer() {
             <h3 className={styles.colTitle}>Организация</h3>
             <ul className={styles.list}>
               <li>
-                <a href="#about">О компании</a>
+                <a href="/#about">О компании</a>
               </li>
               <li>
-                <a href="#partners">Партнерские банки</a>
+                <a href="/#partners">Партнерские банки</a>
               </li>
               <li>
                 <Link href="/cabinet">Личный кабинет</Link>

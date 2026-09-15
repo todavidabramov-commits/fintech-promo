@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { About } from '@/components/home/About'
 import { Cases } from '@/components/home/Cases'
 import { ContactForm } from '@/components/home/ContactForm'
 import { Directions } from '@/components/home/Directions'
@@ -12,6 +13,7 @@ export default function HomePage() {
   return (
     <>
       <Hero />
+      <About />
       <Directions />
       <Stats />
       <Process />

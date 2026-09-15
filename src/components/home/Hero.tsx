@@ -14,7 +14,6 @@ export function Hero() {
           </p>
           <div className={styles.actions}>
             <a className="btn btn--primary" href="#contact">Рассчитать лимиты</a>
-            <a className="btn btn--ghost" href="#about">О компании</a>
           </div>
         </div>
 
